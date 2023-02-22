@@ -1,30 +1,17 @@
 local notify = require("todo.notify")
+local buffer = require("todo.buffer")
 
-local Self = { _icon = "" }
-local function fakefn(valor)
-	return function()
-		print("fakefn " .. (valor or ""))
-	end
-end
+local Self = { _name = "Commands" }
 
 local commands = {
-	["open"] = fakefn("open"),
-	["one"] = {
-		["one_first"] = fakefn("one_first"),
-		["one_second"] = fakefn("one_second"),
-		["two"] = {
-			["two_first"] = fakefn("two_first"),
-			["two_second"] = fakefn("two_second"),
-		},
-	},
+	_default = buffer.open,
+	open = buffer.open,
 }
 
-local function run(opts)
-	local command_fn
-	local command_args = {}
-	local commands_node = commands
+local function get_fn_and_args(fargs)
+	local command_fn, command_args, commands_node = nil, {}, commands
 
-	for _, arg in ipairs(opts.fargs) do
+	for _, arg in ipairs(fargs) do
 		if command_fn then
 			table.insert(command_args, arg)
 		elseif type(commands_node[arg]) == "function" then
@@ -34,6 +21,19 @@ local function run(opts)
 		else
 			break
 		end
+	end
+
+	return command_fn, command_args
+end
+
+local function run(opts)
+	local command_fn, command_args
+
+	-- check if table is empty
+	if next(opts.fargs) == nil then
+		command_fn, command_args = commands._default, {}
+	else
+		command_fn, command_args = get_fn_and_args(opts.fargs)
 	end
 
 	if command_fn then
@@ -46,6 +46,9 @@ local function run(opts)
 		notify.err(string.format("Fail to run [%s]\n%s", opts.args, result), Self)
 		return false
 	else
+		print(vim.inspect(opts.args))
+		print(vim.inspect(opts.fargs))
+
 		notify.err("Invalid command: " .. opts.args, Self)
 		return false
 	end
@@ -59,16 +62,12 @@ local function complete_suggestions(arg, commands_node)
 	end
 
 	for key, _ in pairs(commands_node) do
-		table.insert(result, key)
+		if key ~= "_default" and vim.startswith(key, arg) then
+			table.insert(result, key)
+		end
 	end
 
-	if arg == "" then
-		return result
-	end
-
-	return vim.tbl_filter(function(val)
-		return vim.startswith(val, arg)
-	end, result)
+	return result
 end
 
 local function complete(_, line)
