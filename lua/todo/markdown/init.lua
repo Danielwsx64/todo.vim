@@ -38,7 +38,7 @@ local function format_title(str, meta_one, meta_two)
 	end_ = meta_one > 0 and meta_one < end_ and meta_one or end_
 	end_ = meta_two > 0 and meta_two < end_ and meta_two or end_
 
-	return trim(str:sub(0, end_))
+	return trim(str:sub(8, end_))
 end
 
 local function format_content(content, header)
@@ -62,8 +62,8 @@ function Self.parse(bufnr)
 		table.insert(tasks, {
 			title = format_title(task_header, status_start, due_start),
 			content = format_content(task_content, task_header),
-			status = status,
-			due = due and due:gsub("%*", "") or due,
+			status = status and status:gsub("%:", "") or "todo",
+			due = due and due:gsub("[%*|]", "") or due,
 			range = { start_row, start_col, end_row, end_col },
 			bufnr = bufnr,
 		})
@@ -71,7 +71,5 @@ function Self.parse(bufnr)
 
 	return tasks
 end
-
-print(vim.inspect(Self.parse(23)))
 
 return Self

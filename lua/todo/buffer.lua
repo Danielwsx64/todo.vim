@@ -19,6 +19,8 @@ end
 function Self.open()
 	create_buf(config.get("todo_file"))
 	showup()
+
+	return Self.bufnr
 end
 
 return Self
