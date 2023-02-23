@@ -64,3 +64,30 @@ ft_to_parser.someft = "python" -- the someft filetype will use the python parser
 			vim.treesitter.start()
 		end,
 	})
+
+{ {
+    bufnr = 5,
+    content = "",
+    range = { 2, 0, 3, 0 },
+    status = "done",
+    title = "Item do todo"
+  }, {
+    bufnr = 5,
+    content = "",
+    range = { 3, 0, 4, 0 },
+    status = "doing",
+    title = "Item do todo"
+  }, {
+    bufnr = 5,
+    content = "Aqui dentro\n- Eu posso fazer o que eu achar melhor mano\n\n### mas eu to dentro?\n\n#### Eu nao tenho certeza\n\n\n\n\n\n##se tem outra coisa aqui ferrou\n",
+    range = { 4, 0, 18, 0 },
+    status = "todo",
+    title = "Item do todo [:outro:]"
+  }, {
+    bufnr = 5,
+    content = "",
+    due = "2021-01-01",
+    range = { 18, 0, 20, 0 },
+    status = "done",
+    title = "Item do todo"
+  } }

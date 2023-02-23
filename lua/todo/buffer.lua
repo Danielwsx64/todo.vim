@@ -1,26 +1,40 @@
 local config = require("todo.config")
 
-local Self = { bufnr = -1 }
+local Self = {}
 
-local function showup()
-	local winid = vim.fn.bufwinid(Self.bufnr)
+local tasks_bufnr = -1
+
+local function show_win(bufnr, position)
+	local winid = vim.fn.bufwinid(bufnr)
 
 	if winid == -1 then
-		return vim.api.nvim_win_set_buf(0, Self.bufnr)
+		vim.api.nvim_win_set_buf(0, bufnr)
+		winid = 0
+	else
+		vim.api.nvim_set_current_win(winid)
 	end
 
-	return vim.api.nvim_set_current_win(winid)
-end
-
-local function create_buf(todo_file)
-	Self.bufnr = vim.fn.bufadd(todo_file)
+	if position then
+		vim.api.nvim_win_set_cursor(winid, { position[1] + 1, position[2] })
+	end
 end
 
 function Self.open()
-	create_buf(config.get("todo_file"))
-	showup()
+	show_win(Self.fetch_bufnr())
 
-	return Self.bufnr
+	return tasks_bufnr
+end
+
+function Self.fetch_bufnr()
+	if tasks_bufnr == -1 then
+		tasks_bufnr = vim.fn.bufadd(config.get("todo_file"))
+	end
+
+	return tasks_bufnr
+end
+
+function Self.go_to(task)
+	show_win(task.bufnr, task.range)
 end
 
 return Self

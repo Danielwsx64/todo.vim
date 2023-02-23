@@ -1,7 +1,6 @@
 local queries = require("todo.markdown.queries")
-local trim = require("todo.utils").strings.trim
-
 local treesitter_query = require("vim.treesitter.query")
+local trim = require("todo.utils").strings.trim
 
 local Self = {}
 
@@ -45,6 +44,11 @@ local function format_content(content, header)
 	return content:sub(header:len() + 4, content:len())
 end
 
+------------------
+---- Public
+------------------
+
+-- Return a parserd information from a TODO md file, by buffer number
 function Self.parse(bufnr)
 	local tasks = {}
 
