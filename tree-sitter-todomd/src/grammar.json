@@ -5150,9 +5150,17 @@
   },
   "extras": [],
   "conflicts": [
-    ["link_reference_definition"],
-    ["link_label", "_line"],
-    ["link_reference_definition", "_line"]
+    [
+      "link_reference_definition"
+    ],
+    [
+      "link_label",
+      "_line"
+    ],
+    [
+      "link_reference_definition",
+      "_line"
+    ]
   ],
   "precedences": [
     [
@@ -5379,3 +5387,4 @@
   "inline": [],
   "supertypes": []
 }
+

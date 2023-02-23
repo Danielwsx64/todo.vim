@@ -2,7 +2,7 @@
 // (https://spec.commonmark.org/0.30/#blocks-and-inlines)
 // For more information see README.md
 
-const common = require("../common/grammar.js");
+const common = require("./common_grammar.js");
 
 const PRECEDENCE_LEVEL_LINK = common.PRECEDENCE_LEVEL_LINK;
 
