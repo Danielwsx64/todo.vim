@@ -4,7 +4,6 @@ local Self = { bufnr = -1 }
 
 local function showup()
 	local winid = vim.fn.bufwinid(Self.bufnr)
-	print(winid)
 
 	if winid == -1 then
 		return vim.api.nvim_win_set_buf(0, Self.bufnr)

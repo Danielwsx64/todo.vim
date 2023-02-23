@@ -1,0 +1,32 @@
+treesitter queries highlights
+
+https://github.com/neovim/neovim/pull/14252
+https://github.com/neovim/neovim/pull/20105
+https://github.com/nvim-treesitter/nvim-treesitter/issues/839
+
+vim.treesitter.query.set_query('markdown', 'highlights', '(section (atx_heading heading_content: (inline) @function (#eq? @function  " Item do todo")))')
+vim.treesitter.query.set_query('markdown_inline', 'highlights', '(shortcut_link (link_text) @function (#eq? @function "done"))')
+print(vim.inspect(vim.treesitter.get_query_files('markdown', 'highlights', nil)))
+print(vim.inspect(vim.treesitter.get_query('markdown', 'highlights')))
+
+print(vim.inspect(vim.treesitter.get_parser(5, "markdown")))
+print(vim.inspect(vim.treesitter.get_parser(5, "todo")))
+
+:parse()[1]:root()
+colocar a pasta queries dentro de /home/daniel/workspace/nvim funciona
+
+
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.todomd = {
+  install_info = {
+    url = "https://github.com/MDeiml/tree-sitter-markdown",
+    location = "tree-sitter-markdown",
+    files = { "src/parser.c", "src/scanner.cc" },
+    branch = "split_parser",
+  },
+  filetype = "todomd",
+  experimental = true,
+}
+
+local ft_to_parser = require"nvim-treesitter.parsers".filetype_to_parsername
+ft_to_parser.someft = "python" -- the someft filetype will use the python parser and queries.

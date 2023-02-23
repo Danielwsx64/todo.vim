@@ -4,7 +4,7 @@ local config = nil
 
 local function config_with_defaults(opts)
 	return {
-		todo_file = opts.todo_file or vim.fn.stdpath("config") .. "/todo.md",
+		todo_file = opts.todo_file or vim.fn.stdpath("config") .. "/tasks.todomd",
 	}
 end
 
