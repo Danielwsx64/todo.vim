@@ -1,6 +1,8 @@
 local queries = require("todo.markdown.queries")
 local treesitter_query = require("vim.treesitter.query")
+
 local trim = require("todo.utils").strings.trim
+local Task = require("todo.task")
 
 local Self = {}
 
@@ -63,14 +65,19 @@ function Self.parse(bufnr)
 		local status_start, status = get_status(header_root, task_header)
 		local due_start, due = get_due(header_root, task_header)
 
-		table.insert(tasks, {
-			title = format_title(task_header, status_start, due_start),
-			content = format_content(task_content, task_header),
-			status = status and status:gsub("%:", "") or "todo",
-			due = due and due:gsub("[%*|]", "") or due,
-			range = { start_row, start_col, end_row, end_col },
-			bufnr = bufnr,
-		})
+		table.insert(
+			tasks,
+			Task:new({
+				title = format_title(task_header, status_start, due_start),
+				content = format_content(task_content, task_header),
+				status = status and status:gsub("%:", "") or "todo",
+				due = due and due:gsub("[%*|]", "") or due,
+				meta = {
+					range = { start_row, start_col, end_row, end_col },
+					bufnr = bufnr,
+				},
+			})
+		)
 	end
 
 	return tasks

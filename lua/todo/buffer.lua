@@ -21,8 +21,6 @@ end
 
 function Self.open()
 	show_win(Self.fetch_bufnr())
-
-	return tasks_bufnr
 end
 
 function Self.fetch_bufnr()
@@ -34,7 +32,7 @@ function Self.fetch_bufnr()
 end
 
 function Self.go_to(task)
-	show_win(task.bufnr, task.range)
+	show_win(task:get_bufnr(), task:get_range())
 end
 
 return Self

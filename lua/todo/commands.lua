@@ -1,19 +1,13 @@
 local notify = require("todo.notify")
 local buffer = require("todo.buffer")
-local markdown = require("todo.markdown")
+local tasks_picker = require("todo.pickers.tasks")
 
 local Self = { _name = "Commands" }
-
-local function test()
-	local bufnr = buffer.open()
-
-	print(vim.inspect(markdown.parse(bufnr)))
-end
 
 local commands = {
 	_default = buffer.open,
 	open = buffer.open,
-	test = test,
+	tasks = tasks_picker.tasks_list,
 }
 
 local function get_fn_and_args(fargs)
